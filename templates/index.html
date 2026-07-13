@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Recommender & Career Agent</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold tracking-tight mb-2">AI Job Recommender & Career Agent</h1>
+            <p class="text-slate-400">Paste your resume to find top matches and receive automated upskilling roadmaps.</p>
+        </header>
+
+        <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700 mb-8">
+            <label for="resume" class="block text-sm font-semibold mb-2">Paste Resume Text</label>
+            <textarea id="resume" rows="8" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-slate-200 focus:outline-none focus:border-blue-500 transition-colors placeholder-slate-600" placeholder="Paste your professional summary, technical skills, and experience here..."></textarea>
+            <button onclick="analyzeResume()" id="submitBtn" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors shadow-lg shadow-blue-900/20">
+                Analyze Resume & Generate Insights
+            </button>
+        </div>
+
+        <div id="loading" class="hidden text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <p class="text-slate-400">Running semantic matching and agent chains... This may take a moment.</p>
+        </div>
+
+        <div id="results" class="hidden space-y-8">
+            <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">🎯 Top Job Matches</h2>
+                <div id="matchList" class="space-y-4"></div>
+            </div>
+
+            <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
+                <h2 class="text-2xl font-bold mb-4 text-amber-400">🔍 Recruiter Gap Analysis</h2>
+                <pre id="gapAnalysis" class="whitespace-pre-wrap font-mono text-sm bg-slate-950 p-4 rounded-lg border border-slate-800 text-slate-300 leading-relaxed"></pre>
+            </div>
+
+            <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
+                <h2 class="text-2xl font-bold mb-4 text-emerald-400">🚀 Step-by-Step Upskilling Roadmap</h2>
+                <pre id="roadmap" class="whitespace-pre-wrap font-mono text-sm bg-slate-950 p-4 rounded-lg border border-slate-800 text-slate-300 leading-relaxed"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function analyzeResume() {
+            const resumeText = document.getElementById('resume').value.trim();
+            if (!resumeText) {
+                alert('Please paste your resume text first.');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const matchList = document.getElementById('matchList');
+            const gapAnalysis = document.getElementById('gapAnalysis');
+            const roadmap = document.getElementById('roadmap');
+
+            submitBtn.disabled = true;
+            loading.classList.remove('hidden');
+            results.classList.add('hidden');
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ resume: resumeText })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error || 'Server error');
+
+                // Render Job Matches
+                matchList.innerHTML = data.top_matches.map(match => `
+                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg text-blue-400">${match.title}</h3>
+                            <p class="text-sm text-slate-400 mt-1 line-clamp-2">${match.description}</p>
+                        </div>
+                        <span class="bg-blue-950 text-blue-400 border border-blue-800 text-xs font-bold px-2.5 py-1 rounded-full shrink-0">
+                            ${match.match_pct}% Match
+                        </span>
+                    </div>
+                `).join('');
+
+                // Render Agent Data
+                gapAnalysis.textContent = data.gap_analysis;
+                roadmap.textContent = data.roadmap;
+
+                results.classList.remove('hidden');
+            } catch (error) {
+                alert('Failed to analyze resume: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                loading.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
