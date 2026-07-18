@@ -3,103 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Job Recommender & Career Agent</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>AI Job Recommender</title>
+    <style>
+        /* Base Dark Theme styling */
+        body {
+            background-color: #0f172a; 
+            color: #e2e8f0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* Hero Text */
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-size: 2.2rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+
+        /* Resume Input Box */
+        .input-section {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 15px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        /* Submit Button */
+        button {
+            width: 100%;
+            background-color: #2563eb; 
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Results Container */
+        .results-section {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-title {
+            color: #ffffff;
+            margin-top: 0;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer; /* Shows the pointing hand icon */
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Lift up and highlight when hovering */
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            border-color: #475569;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .job-title {
+            color: #60a5fa; 
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .match-badge {
+            background-color: rgba(37, 99, 235, 0.2);
+            color: #60a5fa;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid rgba(37, 99, 235, 0.4);
+        }
+
+        .job-preview {
+            color: #94a3b8;
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Hidden by default until clicked */
+        .job-full-details {
+            display: none; 
+            color: #e2e8f0;
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin-top: 20px;
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+        }
+
+        .click-hint {
+            font-size: 12px;
+            color: #64748b;
+            font-style: italic;
+            margin-top: 15px;
+            display: block;
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+<body>
 
-    <div class="max-w-4xl mx-auto px-4 py-8">
-        <header class="text-center mb-10">
-            <h1 class="text-4xl font-bold tracking-tight mb-2">AI Job Recommender & Career Agent</h1>
-            <p class="text-slate-400">Paste your resume to find top matches and receive automated upskilling roadmaps.</p>
-        </header>
+<div class="container">
+    
+    <!-- Header Area -->
+    <h1>AI Job Recommender & Career Agent</h1>
+    <p class="subtitle">Paste your resume to find top matches and receive automated upskilling roadmaps.</p>
 
-        <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700 mb-8">
-            <label for="resume" class="block text-sm font-semibold mb-2">Paste Resume Text</label>
-            <textarea id="resume" rows="8" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-slate-200 focus:outline-none focus:border-blue-500 transition-colors placeholder-slate-600" placeholder="Paste your professional summary, technical skills, and experience here..."></textarea>
-            <button onclick="analyzeResume()" id="submitBtn" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors shadow-lg shadow-blue-900/20">
-                Analyze Resume & Generate Insights
-            </button>
-        </div>
-
-        <div id="loading" class="hidden text-center py-12">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p class="text-slate-400">Running semantic matching and agent chains... This may take a moment.</p>
-        </div>
-
-        <div id="results" class="hidden space-y-8">
-            <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
-                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">🎯 Top Job Matches</h2>
-                <div id="matchList" class="space-y-4"></div>
-            </div>
-
-            <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
-                <h2 class="text-2xl font-bold mb-4 text-amber-400">🔍 Recruiter Gap Analysis</h2>
-                <pre id="gapAnalysis" class="whitespace-pre-wrap font-mono text-sm bg-slate-950 p-4 rounded-lg border border-slate-800 text-slate-300 leading-relaxed"></pre>
-            </div>
-
-            <div class="bg-slate-800 rounded-xl p-6 shadow-xl border border-slate-700">
-                <h2 class="text-2xl font-bold mb-4 text-emerald-400">🚀 Step-by-Step Upskilling Roadmap</h2>
-                <pre id="roadmap" class="whitespace-pre-wrap font-mono text-sm bg-slate-950 p-4 rounded-lg border border-slate-800 text-slate-300 leading-relaxed"></pre>
-            </div>
-        </div>
+    <!-- User Input Area -->
+    <div class="input-section">
+        <form method="POST" action="/">
+            <label for="resume_text" style="font-weight: bold; display: block; margin-bottom: 12px; color: #cbd5e1;">Paste Resume Text</label>
+            <textarea id="resume_text" name="resume_text" placeholder="Paste your resume here..." required>{{ request.form.get('resume_text', '') }}</textarea>
+            <button type="submit">Analyze Resume & Generate Insights</button>
+        </form>
     </div>
 
-    <script>
-        async function analyzeResume() {
-            const resumeText = document.getElementById('resume').value.trim();
-            if (!resumeText) {
-                alert('Please paste your resume text first.');
-                return;
-            }
+    <!-- Job Match Results (Only renders if the backend sends 'jobs') -->
+    {% if jobs %}
+    <div class="results-section">
+        <h2 class="results-title">🎯 Top Job Matches</h2>
+        
+        <!-- Loop through every job from the backend -->
+        {% for job in jobs %}
+        <div class="job-card" onclick="toggleJobDetails(this)">
+            
+            <div class="job-header">
+                <h3 class="job-title">{{ job.job_title }}</h3>
+                <span class="match-badge">{{ job.match_score }}% Match</span>
+            </div>
+            
+            <!-- Shows just the first 150 characters initially -->
+            <p class="job-preview">
+                {{ job.job_description[:150] }}...
+            </p>
 
-            const submitBtn = document.getElementById('submitBtn');
-            const loading = document.getElementById('loading');
-            const results = document.getElementById('results');
-            const matchList = document.getElementById('matchList');
-            const gapAnalysis = document.getElementById('gapAnalysis');
-            const roadmap = document.getElementById('roadmap');
+            <!-- The full text that expands on click -->
+            <div class="job-full-details">
+                <strong style="color: #94a3b8;">Full Job Description:</strong><br><br>
+                {{ job.job_description }}
+            </div>
 
-            submitBtn.disabled = true;
-            loading.classList.remove('hidden');
-            results.classList.add('hidden');
+            <span class="click-hint">Click card to expand</span>
+        </div>
+        {% endfor %}
+        
+        <!-- AI Agent Roadmap (Only renders if the backend sends 'agent_analysis') -->
+        {% if agent_analysis %}
+        <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #334155;">
+            <h2 class="results-title">🧠 AI Career Agent Roadmap</h2>
+            <div style="white-space: pre-wrap; line-height: 1.6; color: #cbd5e1;">{{ agent_analysis }}</div>
+        </div>
+        {% endif %}
 
-            try {
-                const response = await fetch('/analyze', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ resume: resumeText })
-                });
+    </div>
+    {% endif %}
+</div>
 
-                const data = await response.json();
+<!-- Interaction Logic (The "Brain" of the Expandable Cards) -->
+<script>
+    function toggleJobDetails(card) {
+        // Find the specific elements inside the card that the user clicked
+        const preview = card.querySelector('.job-preview');
+        const fullDetails = card.querySelector('.job-full-details');
+        const hint = card.querySelector('.click-hint');
 
-                if (!response.ok) throw new Error(data.error || 'Server error');
-
-                // Render Job Matches
-                matchList.innerHTML = data.top_matches.map(match => `
-                    <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 flex justify-between items-start">
-                        <div>
-                            <h3 class="font-bold text-lg text-blue-400">${match.title}</h3>
-                            <p class="text-sm text-slate-400 mt-1 line-clamp-2">${match.description}</p>
-                        </div>
-                        <span class="bg-blue-950 text-blue-400 border border-blue-800 text-xs font-bold px-2.5 py-1 rounded-full shrink-0">
-                            ${match.match_pct}% Match
-                        </span>
-                    </div>
-                `).join('');
-
-                // Render Agent Data
-                gapAnalysis.textContent = data.gap_analysis;
-                roadmap.textContent = data.roadmap;
-
-                results.classList.remove('hidden');
-            } catch (error) {
-                alert('Failed to analyze resume: ' + error.message);
-            } finally {
-                submitBtn.disabled = false;
-                loading.classList.add('hidden');
-            }
+        // Toggle logic: If it's closed, open it. If it's open, close it.
+        if (fullDetails.style.display === "none" || fullDetails.style.display === "") {
+            fullDetails.style.display = "block";  // Show full text
+            preview.style.display = "none";       // Hide preview
+            hint.innerText = "Click card to collapse";
+            card.style.borderColor = "#3b82f6";   // Highlight border blue
+        } else {
+            fullDetails.style.display = "none";   // Hide full text
+            preview.style.display = "block";      // Show preview
+            hint.innerText = "Click card to expand";
+            card.style.borderColor = "#334155";   // Reset border
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
