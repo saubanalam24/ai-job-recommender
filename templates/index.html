@@ -5,244 +5,348 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Job Recommender</title>
     <style>
-        /* Base Dark Theme styling */
         body {
-            background-color: #0f172a; 
-            color: #e2e8f0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #09090b;
+            color: #ededed;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 40px 20px;
+            padding: 0;
         }
-
-        .container {
-            max-width: 850px;
-            margin: 0 auto;
-        }
-
-        /* Hero Text */
-        h1 {
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 5px;
-            font-size: 2.2rem;
-        }
-        .subtitle {
-            text-align: center;
-            color: #94a3b8;
-            margin-bottom: 40px;
-        }
-
-        /* Resume Input Box */
-        .input-section {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 35px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        textarea {
-            width: 100%;
-            height: 150px;
-            background-color: #0f172a;
-            color: #e2e8f0;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 15px;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-
-        /* Submit Button */
-        button {
-            width: 100%;
-            background-color: #2563eb; 
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #1d4ed8;
-        }
-
-        /* Results Container */
-        .results-section {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .results-title {
-            color: #ffffff;
-            margin-top: 0;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            cursor: pointer; /* Shows the pointing hand icon */
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-        }
-
-        /* Lift up and highlight when hovering */
-        .job-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-            border-color: #475569;
-        }
-
-        .job-header {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 40px;
+        }
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        .nav-links a {
+            color: #a1a1aa;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #ededed;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+        }
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .hero p {
+            color: #a1a1aa;
+            font-size: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .db-badge {
+            display: inline-block;
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 20px;
+            border: 1px solid #334155;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        .section-header {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #71717a;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .section-desc {
+            color: #a1a1aa;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .input-card {
+            background-color: #121212;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 40px;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: #09090b;
+            color: #ededed;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #555;
+        }
+        button {
+            background-color: #ededed;
+            color: #09090b;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #d4d4d8;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .job-card {
+            background-color: #121212;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .job-card:hover {
+            border-color: #555;
+        }
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 12px;
         }
-
         .job-title {
-            color: #60a5fa; 
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 16px;
+            font-weight: 600;
         }
-
         .match-badge {
-            background-color: rgba(37, 99, 235, 0.2);
-            color: #60a5fa;
-            padding: 6px 12px;
+            background-color: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            border: 1px solid rgba(37, 99, 235, 0.4);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            margin-left: 10px;
         }
-
-        .job-preview {
-            color: #94a3b8;
-            font-size: 14.5px;
+        .job-desc-content {
+            color: #a1a1aa;
+            font-size: 14px;
             line-height: 1.6;
             margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-
-        /* Hidden by default until clicked */
-        .job-full-details {
-            display: none; 
-            color: #e2e8f0;
-            font-size: 14.5px;
-            line-height: 1.6;
+        .job-card.expanded .job-desc-content {
+            -webkit-line-clamp: unset;
+            color: #d4d4d8;
+        }
+        .apply-btn {
+            display: none;
             margin-top: 20px;
-            border-top: 1px solid #334155;
-            padding-top: 20px;
+            padding: 10px 16px;
+            background-color: #ededed;
+            color: #09090b;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            width: max-content;
+        }
+        .job-card.expanded .apply-btn {
+            display: inline-block;
+        }
+        .agent-box {
+            background-color: #121212;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 24px;
+            color: #d4d4d8;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        .empty-state {
+            background-color: #121212;
+            border: 1px dashed #3f3f46;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            color: #a1a1aa;
+            margin-bottom: 40px;
+        }
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 16px;
+        }
+        .download-btn {
+            background-color: #3b82f6;
+            color: white;
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+        .download-btn:hover {
+            background-color: #2563eb;
         }
 
-        .click-hint {
-            font-size: 12px;
-            color: #64748b;
-            font-style: italic;
-            margin-top: 15px;
-            display: block;
+        /* NEW: Advanced Print CSS to format the native PDF perfectly */
+        @media print {
+            body {
+                background-color: #09090b !important;
+                color: #ededed !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .navbar, .input-card, .download-btn {
+                display: none !important; /* Hides the UI so it looks like a clean report */
+            }
+            .grid {
+                display: block !important; /* Stops the grid from breaking across PDF pages */
+            }
+            .job-card {
+                margin-bottom: 24px;
+                page-break-inside: avoid; /* Forces jobs to stay whole and not split across pages */
+                break-inside: avoid;
+                border: 1px solid #3f3f46 !important;
+            }
+            .job-desc-content {
+                -webkit-line-clamp: unset !important; /* Automatically expands ALL text in the PDF */
+                color: #d4d4d8 !important;
+            }
+            .apply-btn {
+                display: inline-block !important; /* Automatically shows all apply buttons in the PDF */
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    
-    <!-- Header Area -->
-    <h1>AI Job Recommender & Career Agent</h1>
-    <p class="subtitle">Paste your resume to find top matches and receive automated upskilling roadmaps.</p>
+    <nav class="navbar">
+        <div class="navbar-brand">CareerLab</div>
+        <div class="nav-links">
+            {% if current_user.is_authenticated %}
+                <a href="/dashboard">Dashboard</a>
+                <a href="/logout">Logout</a>
+            {% else %}
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            {% endif %}
+        </div>
+    </nav>
 
-    <!-- User Input Area -->
-    <div class="input-section">
-        <form method="POST" action="/">
-            <label for="resume_text" style="font-weight: bold; display: block; margin-bottom: 12px; color: #cbd5e1;">Paste Resume Text</label>
-            <textarea id="resume_text" name="resume_text" placeholder="Paste your resume here..." required>{{ request.form.get('resume_text', '') }}</textarea>
-            <button type="submit">Analyze Resume & Generate Insights</button>
-        </form>
+    <div class="hero">
+        <h1>AI Job Recommender</h1>
+        <p>A modular career platform. Upload your resume, pick a target role, and get AI-powered upskilling results.</p>
+        <div class="db-badge">{{ total_jobs }} Jobs in Vector Database</div>
     </div>
 
-    <!-- Job Match Results (Only renders if the backend sends 'jobs') -->
-    {% if jobs %}
-    <div class="results-section">
-        <h2 class="results-title">🎯 Top Job Matches</h2>
+    <div class="container">
         
-        <!-- Loop through every job from the backend -->
-        {% for job in jobs %}
-        <div class="job-card" onclick="toggleJobDetails(this)">
-            
-            <div class="job-header">
-                <h3 class="job-title">{{ job.job_title }}</h3>
-                <span class="match-badge">{{ job.match_score }}% Match</span>
-            </div>
-            
-            <!-- Shows just the first 150 characters initially -->
-            <p class="job-preview">
-                {{ job.job_description[:150] }}...
-            </p>
-
-            <!-- The full text that expands on click -->
-            <div class="job-full-details">
-                <strong style="color: #94a3b8;">Full Job Description:</strong><br><br>
-                {{ job.job_description }}
-            </div>
-
-            <span class="click-hint">Click card to expand</span>
-        </div>
-        {% endfor %}
+        <div class="section-header">Resume Analysis</div>
+        <div class="section-desc">Upload a PDF or paste text to assign scores to your profile.</div>
         
-        <!-- AI Agent Roadmap (Only renders if the backend sends 'agent_analysis') -->
-        {% if agent_analysis %}
-        <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #334155;">
-            <h2 class="results-title">🧠 AI Career Agent Roadmap</h2>
-            <div style="white-space: pre-wrap; line-height: 1.6; color: #cbd5e1;">{{ agent_analysis }}</div>
+        <div class="input-card">
+            <form method="POST" action="/" enctype="multipart/form-data">
+                <label style="display:block; margin-bottom: 8px; color: #a1a1aa; font-size: 14px; font-weight: 600;">Upload PDF Resume</label>
+                <input type="file" name="resume_file" accept=".pdf" style="margin-bottom: 15px; color: #ededed;">
+                
+                <div style="text-align: center; margin-bottom: 15px; color: #71717a; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">— OR —</div>
+                
+                <textarea id="resume_text" name="resume_text" placeholder="Paste your raw resume text here...">{{ request.form.get('resume_text', '') }}</textarea>
+                <button type="submit" style="margin-top: 16px; width: 100%;">Analyze Profile</button>
+            </form>
         </div>
+
+        {% if search_completed %}
+            <div id="pdf-export-area">
+                
+                <div class="header-actions">
+                    <div class="section-header" style="margin: 0;">Top Matches (>30%)</div>
+                    {% if jobs %}
+                        <button onclick="downloadPDF()" class="download-btn">Download PDF Report</button>
+                    {% endif %}
+                </div>
+                
+                {% if jobs %}
+                    <div class="section-desc">Found {{ jobs|length }} roles matching your profile. Click a card to expand details.</div>
+                    
+                    <div class="grid">
+                        {% for job in jobs %}
+                        <!-- FIXED: Removed the 'expanded' class here so they stay closed by default -->
+                        <div class="job-card" onclick="toggleJobDetails(event)">
+                            <div class="job-header">
+                                <h3 class="job-title">{{ job.job_title }}</h3>
+                                <span class="match-badge">{{ job.match_score }}% MATCH</span>
+                            </div>
+                            <div class="job-desc-content">
+                                {{ job.job_description | safe }}
+                            </div>
+                            <a href="https://www.google.com/search?q={{ job.job_title | urlencode }} job application" target="_blank" class="apply-btn" onclick="event.stopPropagation()">Search & Apply</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        No roles found with a match score of 30% or higher. Try expanding your resume or adding more jobs to the database.
+                    </div>
+                {% endif %}
+
+                {% if agent_analysis %}
+                <div class="section-header" style="margin-top: 40px;">Agent Roadmap</div>
+                <div class="section-desc">Generates a step-by-step upskilling plan based on your highest match.</div>
+                <div class="agent-box">{{ agent_analysis }}</div>
+                {% endif %}
+            </div>
         {% endif %}
 
     </div>
-    {% endif %}
-</div>
 
-<!-- Interaction Logic (The "Brain" of the Expandable Cards) -->
-<script>
-    function toggleJobDetails(card) {
-        // Find the specific elements inside the card that the user clicked
-        const preview = card.querySelector('.job-preview');
-        const fullDetails = card.querySelector('.job-full-details');
-        const hint = card.querySelector('.click-hint');
-
-        // Toggle logic: If it's closed, open it. If it's open, close it.
-        if (fullDetails.style.display === "none" || fullDetails.style.display === "") {
-            fullDetails.style.display = "block";  // Show full text
-            preview.style.display = "none";       // Hide preview
-            hint.innerText = "Click card to collapse";
-            card.style.borderColor = "#3b82f6";   // Highlight border blue
-        } else {
-            fullDetails.style.display = "none";   // Hide full text
-            preview.style.display = "block";      // Show preview
-            hint.innerText = "Click card to expand";
-            card.style.borderColor = "#334155";   // Reset border
+    <script>
+        function toggleJobDetails(event) {
+            const card = event.currentTarget;
+            card.classList.toggle('expanded');
         }
-    }
-</script>
 
+        function downloadPDF() {
+            window.print();
+        }
+    </script>
 </body>
 </html>
