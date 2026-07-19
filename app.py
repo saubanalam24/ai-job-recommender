@@ -56,7 +56,7 @@ def index():
         
         results = collection.query(
             query_embeddings=resume_vector,
-            n_results=total_jobs_in_db
+            n_results=20
         )
         
         jobs = []
