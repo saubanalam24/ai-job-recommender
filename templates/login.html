@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CareerLab</title>
+    <style>
+        body {
+            background-color: #09090b;
+            color: #ededed;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid #1e1e20;
+        }
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: #ededed;
+        }
+        .nav-links a {
+            color: #a1a1aa;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #ededed;
+        }
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 80px;
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .auth-header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+        }
+        .auth-header p {
+            color: #a1a1aa;
+            margin: 0;
+            font-size: 15px;
+        }
+        .auth-card {
+            background-color: #121212;
+            padding: 40px;
+            border-radius: 12px;
+            width: 360px;
+            border: 1px solid #27272a;
+            box-sizing: border-box;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .input-group label {
+            display: block;
+            color: #a1a1aa;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #09090b;
+            border: 1px solid #27272a;
+            border-radius: 6px;
+            color: #ededed;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #555;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #e5e5e5;
+        }
+        .auth-footer {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #71717a;
+            text-align: center;
+        }
+        .auth-footer a {
+            color: #ededed;
+            text-decoration: none;
+        }
+        .error-msg {
+            color: #ef4444;
+            font-size: 13px;
+            margin-bottom: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">CareerLab</a>
+        <div class="nav-links">
+            <a href="/login">Log in</a>
+            <a href="/register">Sign up</a>
+        </div>
+    </nav>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Welcome back</h1>
+            <p>Log in to continue to CareerLab</p>
+        </div>
+        
+        <div class="auth-card">
+            {% if error %}
+                <div class="error-msg">{{ error }}</div>
+            {% endif %}
+            
+            <form method="POST">
+                <div class="input-group">
+                    <label>Username or Email</label>
+                    <input type="text" name="login_input" placeholder="you@example.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit">Login</button>
+            </form>
+            
+            <div class="auth-footer">
+                Don't have an account? <a href="/register">Sign up</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
