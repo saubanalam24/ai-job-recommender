@@ -23,7 +23,7 @@ login_manager.login_view = 'login'
 
 with app.app_context():
     db.create_all()
-
+print("Loading AI Model and Vector Database... please wait a few seconds...")
 model = SentenceTransformer('all-MiniLM-L6-v2')
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
 collection = chroma_client.get_collection(name="job_postings")
