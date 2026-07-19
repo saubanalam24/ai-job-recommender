@@ -1,11 +1,15 @@
 import os
+from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 
+load_dotenv()
+
 llm = ChatGroq(
-    model="llama-3.3-70b-versatile", 
+    model="llama-3.3-70b-versatile",
     temperature=0.2,
     api_key=os.environ.get("GROQ_API_KEY")
+)
 
 recruiter_prompt = ChatPromptTemplate.from_messages([
     ("system", "You are an expert technical recruiter analyzing a candidate for a specific job role. Identify clear skill gaps, missing technologies, and experience mismatches between the resume and the job description."),
